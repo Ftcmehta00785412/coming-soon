@@ -1,42 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Coming Soon</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      padding: 50px;
-      background-color: #f5f5f5;
       margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .top-bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      z-index: 100;
     }
 
     .logo {
-      width: 150px;
-      margin-bottom: 30px;
-    }
-
-    h1 {
-      font-size: 2.5rem;
-      color: #333;
-    }
-
-    .countdown-container {
-      margin-top: 40px;
-    }
-
-    #countdown span {
-      font-size: 2rem;
-      margin: 0 10px;
-      color: #444;
+      width: 120px;
     }
 
     .contact-button {
-      position: absolute;
-      top: 20px;
-      right: 20px;
       background-color: #007BFF;
       color: white;
       padding: 10px 20px;
@@ -51,26 +44,43 @@
       background-color: #0056b3;
     }
 
-    /* To ensure absolute positioning works */
-    .page-wrapper {
-      position: relative;
-      min-height: 100vh;
+    .center-content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    .countdown-container h2 {
+      margin-bottom: 10px;
+    }
+
+    #countdown span {
+      font-size: 2rem;
+      margin: 0 10px;
+      color: #444;
     }
   </style>
 </head>
 <body>
 
-  <div class="page-wrapper">
-    <!-- Contact Us Button -->
+  <!-- Top Bar with Logo and Contact -->
+  <div class="top-bar">
+    <img src="724C5D8C-FD27-4624-8271-2C37C257C684.png" alt="Logo" class="logo" />
     <a href="mailto:vinay@urdelivery.co.in" class="contact-button">Contact Us</a>
+  </div>
 
-    <!-- Logo -->
-    <img src="logo.png" alt="Logo" class="logo">
+  <!-- Centered Content -->
+  <div class="center-content">
+    <h1>We are coming with more exciting features</h1>
 
-    <!-- Coming Soon Text -->
-    <h1>We’re Launching Soon!</h1>
-
-    <!-- Countdown Timer -->
     <div class="countdown-container">
       <h2>Launching In</h2>
       <div id="countdown">
@@ -82,7 +92,7 @@
     </div>
   </div>
 
-  <!-- JavaScript for Countdown -->
+  <!-- Countdown Script -->
   <script>
     const launchDate = new Date("2025-06-01T00:00:00").getTime();
 
