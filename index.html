@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>UrDelivery – Coming Soon</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:700,400&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:700,400&display=swap" />
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
   <style>
     body {
       margin: 0;
@@ -101,13 +102,14 @@
       justify-content: center;
       align-items: center;
       gap: 10px;
+      flex-direction: column;
     }
     .subscribe-box input[type="email"] {
       padding: 10px 14px;
       border: none;
       border-radius: 4px;
       font-size: 1rem;
-      width: 220px;
+      width: 250px;
       outline: none;
     }
     .subscribe-box button {
@@ -162,7 +164,7 @@
 <body>
   <div class="header">
     <div class="logo">
-      <img src="files/724C5D8C-FD27-4624-8271-2C37C257C684.png" alt="UrDelivery Logo">
+      <img src="files/724C5D8C-FD27-4624-8271-2C37C257C684.png" alt="UrDelivery Logo" />
       <span>UrDelivery</span>
     </div>
     <button class="cta-btn" onclick="window.location.href='mailto:support@urdelivery.co.in'">Contact Us</button>
@@ -171,35 +173,23 @@
     <h1>We are coming with more exciting features!</h1>
     <p>Our new platform is launching soon. Stay tuned for a faster, smarter, and more reliable delivery experience.</p>
     <div class="countdown" id="countdown">
-      <div class="countdown-item">
-        <div class="countdown-number" id="days">--</div>
-        <div class="countdown-label">Days</div>
-      </div>
-      <div class="countdown-item">
-        <div class="countdown-number" id="hours">--</div>
-        <div class="countdown-label">Hours</div>
-      </div>
-      <div class="countdown-item">
-        <div class="countdown-number" id="minutes">--</div>
-        <div class="countdown-label">Minutes</div>
-      </div>
-      <div class="countdown-item">
-        <div class="countdown-number" id="seconds">--</div>
-        <div class="countdown-label">Seconds</div>
-      </div>
+      <div class="countdown-item"><div class="countdown-number" id="days">--</div><div class="countdown-label">Days</div></div>
+      <div class="countdown-item"><div class="countdown-number" id="hours">--</div><div class="countdown-label">Hours</div></div>
+      <div class="countdown-item"><div class="countdown-number" id="minutes">--</div><div class="countdown-label">Minutes</div></div>
+      <div class="countdown-item"><div class="countdown-number" id="seconds">--</div><div class="countdown-label">Seconds</div></div>
     </div>
-    <form class="subscribe-box" onsubmit="subscribe(event)">
-      <label for="email" style="position:absolute;left:-10000px;">Email address</label>
-      <input type="email" id="email" placeholder="Enter your email" required aria-label="Email address">
+    <form class="subscribe-box" id="subscription-form">
+      <input type="email" id="email" placeholder="Enter your email" required />
+      <div class="g-recaptcha" data-sitekey="6LeNEacrAAAAAH2vDOAtGDu0zKFB6_FweGl2e1rr"></div>
       <button type="submit">Notify Me</button>
     </form>
     <div id="subscribe-message" style="color:#1ecbe1; margin-top:12px;"></div>
   </div>
   <div class="footer">
-    &copy; 2025 UrDelivery Technologies Pvt Ltd&mdash; All rights reserved. | <a href="mailto:support@urdelivery.co.in" style="color:#1ecbe1;text-decoration:none;">support@urdelivery.co.in</a>
+    &copy; 2025 UrDelivery Technologies Pvt Ltd &mdash; All rights reserved. |
+    <a href="mailto:support@urdelivery.co.in" style="color:#1ecbe1;text-decoration:none;">support@urdelivery.co.in</a>
   </div>
   <script>
-    // Set your launch date here (future date)
     const launchDate = new Date("2025-09-01T00:00:00").getTime();
 
     function updateCountdown() {
@@ -213,7 +203,6 @@
       const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
       const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
       const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
       document.getElementById("days").textContent = days;
       document.getElementById("hours").textContent = hours;
       document.getElementById("minutes").textContent = minutes;
@@ -222,13 +211,32 @@
     setInterval(updateCountdown, 1000);
     updateCountdown();
 
-    // Simple subscription handler (demo only)
-    function subscribe(event) {
-      event.preventDefault();
+    document.getElementById('subscription-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
       const email = document.getElementById('email').value;
-      document.getElementById('subscribe-message').textContent = "Thank you! We'll notify you at " + email;
-      event.target.reset();
-    }
+      const token = grecaptcha.getResponse();
+      if (!token) {
+        document.getElementById('subscribe-message').textContent = "Please complete the CAPTCHA.";
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append('email', email);
+      formData.append('g-recaptcha-response', token);
+
+      try {
+        const response = await fetch("https://script.google.com/a/macros/manthanworld.com/s/AKfycbxpx_e6LFKSOo9q4Nw5-DbkHeC67ikoL26iopU4ews78BwqNeDW0avHWfAM39jLy76k/exec", {
+          method: 'POST',
+          body: formData
+        });
+        const result = await response.text();
+        document.getElementById('subscribe-message').textContent = "Thank you! We'll notify you at " + email;
+        document.getElementById('subscription-form').reset();
+        grecaptcha.reset();
+      } catch (error) {
+        document.getElementById('subscribe-message').textContent = "Something went wrong. Please try again.";
+      }
+    });
   </script>
 </body>
 </html>
