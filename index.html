@@ -162,7 +162,8 @@
 <body>
   <div class="header">
     <div class="logo">
-      <img src="selected_image_724C5D8C-FD27-4624-8271-2C37C257C684.png" alt="UrDelivery Logo">
+      <!-- Use a placeholder image if your logo is missing -->
+      <img src="https://via.placeholder.com/48x48.png?text=Logo" alt="UrDelivery Logo - Delivery Van Icon">
       <span>UrDelivery</span>
     </div>
     <button class="cta-btn" onclick="window.location.href='mailto:support@urdelivery.co.in'">Contact Us</button>
@@ -189,7 +190,8 @@
       </div>
     </div>
     <form class="subscribe-box" onsubmit="subscribe(event)">
-      <input type="email" id="email" placeholder="Enter your email" required>
+      <label for="email" style="position:absolute;left:-10000px;">Email address</label>
+      <input type="email" id="email" placeholder="Enter your email" required aria-label="Email address">
       <button type="submit">Notify Me</button>
     </form>
     <div id="subscribe-message" style="color:#1ecbe1; margin-top:12px;"></div>
@@ -198,8 +200,8 @@
     &copy; 2025 UrDelivery Technologies Pvt Ltd&mdash; All rights reserved. | <a href="mailto:support@urdelivery.co.in" style="color:#1ecbe1;text-decoration:none;">support@urdelivery.co.in</a>
   </div>
   <script>
-    // Set your launch date here
-    const launchDate = new Date("2025-06-01T00:00:00").getTime();
+    // Set your launch date here (future date)
+    const launchDate = new Date("2025-09-01T00:00:00").getTime();
 
     function updateCountdown() {
       const now = new Date().getTime();
@@ -226,7 +228,7 @@
       event.preventDefault();
       const email = document.getElementById('email').value;
       document.getElementById('subscribe-message').textContent = "Thank you! We'll notify you at " + email;
-      document.querySelector('.subscribe-box').reset();
+      event.target.reset();
     }
   </script>
 </body>
